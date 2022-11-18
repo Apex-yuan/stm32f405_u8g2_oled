@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "u8g2_port.h": "c",
+        "oled.h": "c"
+    },
+
+    "mcu_type" : "STM32F405RG"
+}

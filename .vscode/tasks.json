@@ -1,0 +1,142 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+		{
+			"label": "build",
+			"type": "shell",
+			"command": "make",
+			"args": [
+				"-j4",
+				"-C",
+				"${workspaceFolder}"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [
+				"$gcc"
+			]
+		},
+		{
+			"label": "clean",
+			"type": "shell",
+			"command": "make",
+			"args": [
+				"clean",
+				"-C",
+				"${workspaceFolder}"
+			]
+		},
+		{
+			"label": "download-stlink",
+			"type": "shell",
+			"command": "openocd",
+			"args": [
+				"-f",
+				"interface/stlink-v2.cfg",
+				"-f",
+				"target/stm32f4x.cfg",
+				"-c",
+				"program build/${workspaceFolderBasename}.elf verify reset exit"
+			],
+			"dependsOn": "build",
+			"problemMatcher": [
+				"$gcc"
+			]
+		},
+		{
+			"label": "download-jlink(JLink.exe)",
+			"type": "shell",
+			"command": "jlink.exe",
+			"args": [
+				"-device",
+				"${config:mcu_type}", // "stm32f405rg",
+				"-if",
+				"swd",
+				"-speed",
+				"4000",
+				"-CommanderScript",
+				"download.jlink"
+			],
+			"dependsOn": "build",
+			"problemMatcher": [
+				"$gcc"
+			]
+		},
+		{
+			"label": "download-jlink(OpenOCD)",
+			"type": "shell",
+			"command": "openocd",
+			"args": [
+				"-f",
+				"interface/jlink-swd.cfg",
+				"-f",
+				"target/stm32f4x.cfg",
+				"-c",
+				"program build/${workspaceFolderBasename}.elf verify reset exit"
+			],
+			"dependsOn": "build",
+			"problemMatcher": [
+				"$gcc"
+			]
+		},
+		{
+			"label": "reset-stlink",
+			"type": "shell",
+			"command": "openocd",
+			"args": [
+				"-f",
+				"interface/stlink-v2.cfg",
+				"-f",
+				"target/stm32f4x.cfg",
+				"-c init",
+				"-c reset",
+				"-c exit"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "halt-stlink",
+			"type": "shell",
+			"command": "openocd",
+			"args": [
+				"-f",
+				"interface/stlink-v2.cfg",
+				"-f",
+				"target/stm32f4x.cfg",
+				"-c init",
+				"-c halt",
+				"-c exit"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "run-stlink",
+			"type": "shell",
+			"command": "openocd",
+			"args": [
+				"-f",
+				"interface/stlink-v2.cfg",
+				"-f",
+				"target/stm32f4x.cfg",
+				"-c init",
+				"-c resume",
+				"-c exit"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "test",
+			"type": "shell",
+			"command": "echo ${config:mcu_type}",
+			"args": [
+				// "${mcu_type}"
+			],
+			"problemMatcher": []
+		}
+
+	]
+}

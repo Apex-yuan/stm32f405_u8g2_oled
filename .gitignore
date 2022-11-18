@@ -1,0 +1,23 @@
+## ignore folder
+# Keil MDK
+DebugConfig/
+Listings/
+Objects/
+# GCC
+build/
+
+# ignore file
+*.bin
+*.hex
+*.o
+*.d
+*.crf
+*.axf
+*.htm
+*.lnp
+*.map
+*.scp
+*.dep
+*.iex
+*.sct
+*.lst
